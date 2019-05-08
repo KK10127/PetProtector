@@ -8,5 +8,8 @@
     <string name="add_button_text">Add Pet</string>
     <string name="enter">Enter Pet To Protect</string>
     <string name="photo">photo of pet</string>
+    <string name="nameHint">Name</string>
+    <string name="detailsHint">Details</string>
+    <string name="phoneHint">(000)000-0000</string>
 
 </resources>

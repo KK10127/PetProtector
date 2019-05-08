@@ -1,127 +1,161 @@
 package edu.miracostacollege.cs134.petprotector.model;
 
-/** Model class representing a Pet in this PetProtector project **/
-public class Pet {
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    /** Private members **/
-    private String mDetails;
-    private int mId;
-    private String mImageUri;
+import java.io.File;
+import java.net.URI;
+
+/**
+ * Create a Pet object
+ */
+public class Pet implements Parcelable {
+    //member variables
     private String mName;
+    private String mDetails;
+    private long mId;
     private String mPhone;
+    private Uri mImageURI;
+    private String uriString;
 
     /**
-     * Default constructor for a default pet object.
+     * Constructor with all parameters
+     * @param name pet name
+     * @param details pet description
+     * @param id unique id
+     * @param phone pet owner phone number
+     * @param imageURI uri for image
      */
-    public Pet() {
-        mDetails = "Basic details!";
-        mId = -1;
-        mImageUri = "";
-        mName = "John Doe";
-        mPhone = "123-1234";
-    }
-
-    /**
-     * Overloaded constructor for a new custom pet object.
-     * @param name The desired name for this pet.
-     * @param phone The desired phone number to be attached to this pet.
-     * @param imageUri The desired imageUri to be attached to this pet.
-     * @param id The desired ID for this pet.
-     * @param details The desired details blurb for this pet.
-     */
-    public Pet(String name, String phone, String imageUri, int id, String details) {
+    public Pet(String name, String details, int id, String phone, Uri imageURI) {
         mName = name;
-        mPhone = phone;
-        mImageUri = imageUri;
-        mId = id;
         mDetails = details;
-    }
-
-
-    /**
-     * Accessor method for the details of this pet.
-     * @return This pet's details as a string.
-     */
-    public String getDetails() {
-        return mDetails;
+        mId = id;
+        mPhone = phone;
+        mImageURI = imageURI;
+        uriString = imageURI.toString();
     }
 
     /**
-     * Accessor method for the id of this pet.
-     * @return This pets id as an integer.
+     * Constructor without id
+     * @param name pet name
+     * @param details pet details
+     * @param phone pet owner phone number
+     * @param imageURI uri for image
      */
-    public int getId() {
-        return mId;
+    public Pet(String name, String details, String phone, Uri imageURI){
+        mName = name;
+        mDetails = details;
+        mPhone = phone;
+        mImageURI = imageURI;
+
+        if (imageURI != null) {
+        uriString = imageURI.toString();
+        } else {
+            uriString = Uri.parse(new File("drawable/none.png").toString()).toString();
+        }
+
     }
 
     /**
-     * Accessor method for the imageUri of this pet.
-     * @return This pet object's imageUri as a String.
+     * Creator method for parcelable Pet items
      */
-    public String getImageUri() {
-        return mImageUri;
-    }
+    public static final Creator<Pet> CREATOR = new Creator<Pet>() {
+        @Override
+        public Pet createFromParcel(Parcel in) {
+            return new Pet(in);
+        }
 
-    /**
-     * Accesor method for the name of this pet.
-     * @return The name of this pet as a String.
-     */
+        @Override
+        public Pet[] newArray(int size) {
+            return new Pet[size];
+        }
+    };
+
+    //getters and setters for member variables
     public String getName() {
         return mName;
     }
 
-    /**
-     * Accessor method for the phone number.
-     * @return The phone number as a string.
-     */
-    public String getPhone() {
-        return mPhone;
-    }
-
-    /**
-     * Mutator method for the details of this Pet.
-     * @param details The desired details of this pet as a String.
-     */
-    public void setDetails(String details) {
-        mDetails = details;
-    }
-
-    /**
-     * Mutator method for the imageUri for this Pet.
-     * @param imageUri The desired imageUri of this pet as a String.
-     */
-    public void setImageUri(String imageUri) {
-        mImageUri = imageUri;
-    }
-
-    /**
-     * Mutator method for the name of this pet.
-     * @param name The desired name of this pet.
-     */
     public void setName(String name) {
         mName = name;
     }
 
-    /**
-     * Mutator method for the contact phone number of this pet.
-     * @param phone The desired phone number.
-     */
+    public String getDetails() {
+        return mDetails;
+    }
+
+    public void setDetails(String details) {
+        mDetails = details;
+    }
+
+    public String getPhone() {
+        return mPhone;
+    }
+
     public void setPhone(String phone) {
         mPhone = phone;
     }
 
+    public Uri getImageURI() {
+        return mImageURI;
+    }
+
+    public void setImageURI(Uri imageURI) {
+        mImageURI = imageURI;
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    public String getImageURIString(){
+        return uriString;
+    }
+
     /**
-     * Simple toString method for this Pet.
-     * @return A meaningful representation of this object's data as a string.
+     * ToString method to show details about Pet
+     * @return String
      */
     @Override
     public String toString() {
         return "Pet{" +
-                "mDetails='" + mDetails + '\'' +
+                "mName='" + mName + '\'' +
+                ", mDetails='" + mDetails + '\'' +
                 ", mId=" + mId +
-                ", mImageUri='" + mImageUri + '\'' +
-                ", mName='" + mName + '\'' +
                 ", mPhone='" + mPhone + '\'' +
+                ", mImageURI=" + uriString +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * For Parcelable Pet objects
+     * @param dest
+     * @param flags
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mName);
+        dest.writeString(mDetails);
+        dest.writeLong(mId);
+        dest.writeString(mPhone);
+        dest.writeString(uriString);
+    }
+
+    /**
+     * Parcel constructor for pet objects
+     * @param parcel
+     */
+    public Pet(Parcel parcel){
+        mName = parcel.readString();
+        mDetails = parcel.readString();
+        mId = parcel.readLong();
+        mPhone = parcel.readString();
+        uriString = parcel.readString();
     }
 }

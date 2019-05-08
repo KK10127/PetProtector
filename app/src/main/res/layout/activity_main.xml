@@ -34,13 +34,41 @@
         android:onClick="selectPetImage"
         android:src="@drawable/none" />
 
+    <EditText
+        android:id="@+id/petNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nameHint"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/petDetailsEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/detailsHint"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/phoneNumberEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/phoneHint"
+        android:inputType="phone" />
+
     <Button
         android:id="@+id/addPetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:onClick="addPet"
         android:text="@string/add_button_text"
         android:textSize="18sp" />
 
+    <ListView
+        android:id="@+id/petsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
 
 </LinearLayout>
